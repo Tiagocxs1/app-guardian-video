@@ -9,8 +9,8 @@ import {
   interpolate,
   spring,
 } from 'remotion';
-import {PhoneScreen} from './PhoneScene';
-import {SCENES, C_DARK, C_CYAN, C_WHITE, C_RED} from './timeline';
+import {ScreenContent, Caption} from './PhoneScene';
+import {SCENES, C_DARK, C_CYAN} from './timeline';
 
 // Mockup Moto G04s — dimensões
 const PHONE_W = 680;
@@ -35,12 +35,12 @@ export const GuardianVideo: React.FC = () => {
       {/* Barra superior accent */}
       <div style={{position: 'absolute', top: 0, left: 0, right: 0, height: 10, background: C_CYAN, opacity: 0.9}} />
 
-      {/* Mockup Moto G04s (persistente) */}
+      {/* Mockup Moto G04s (persistente) — posicionado mais acima para não sobrepor a legenda */}
       <div
         style={{
           position: 'absolute',
           left: '50%',
-          top: '45%',
+          top: '39%',
           width: PHONE_W,
           height: PHONE_H,
           transform: `translate(-50%, -50%) translateY(${entryY + hover}px)`,
@@ -62,7 +62,7 @@ export const GuardianVideo: React.FC = () => {
             transform: 'translateX(-50%)', borderRadius: 4, background: '#444', zIndex: 5,
           }}
         />
-        {/* Tela (conteúdo troca por cena) */}
+        {/* Tela (conteúdo troca por cena — dentro do mockup) */}
         <div
           style={{
             position: 'absolute', inset: SCREEN_INSET, borderRadius: 34,
@@ -72,11 +72,22 @@ export const GuardianVideo: React.FC = () => {
           <Series>
             {SCENES.map((scene) => (
               <Series.Sequence key={scene.id} durationInFrames={Math.round(scene.durationSec * 30)}>
-                <PhoneScreen scene={scene} />
+                <ScreenContent scene={scene} />
               </Series.Sequence>
             ))}
           </Series>
         </div>
+      </div>
+
+      {/* Legenda da cena (fora do mockup, no fundo inferior) — Series sincronizado */}
+      <div style={{position: 'absolute', inset: 0, zIndex: 20, pointerEvents: 'none'}}>
+        <Series>
+          {SCENES.map((scene) => (
+            <Series.Sequence key={`c-${scene.id}`} durationInFrames={Math.round(scene.durationSec * 30)}>
+              <Caption scene={scene} />
+            </Series.Sequence>
+          ))}
+        </Series>
       </div>
 
       {/* Narração única */}
