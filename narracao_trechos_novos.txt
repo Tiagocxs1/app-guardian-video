@@ -1,0 +1,32 @@
+========================================================================
+TRECHOS NOVOS PARA GRAVAR (mesmo tom/narrador do restante)
+========================================================================
+
+TRECHO 1 — inserir na PARTE 2, logo após:
+"No menu gestor, eu tenho outras ferramentas para administrar a minha unidade."
+(antes de "Dependendo das minhas permissões...")
+
+------------------------------------------------------------------------
+Por ele, eu acesso e edito os meus dados pessoais, o meu endereço e a senha
+do aplicativo. Também posso gerenciar os meus chaveiros de aproximação e os
+meus controles remotos, e cadastrar os veículos da minha família. E ainda
+consultar e alterar a minha senha de acesso, quando quiser.
+------------------------------------------------------------------------
+
+TRECHO 2 — inserir na PARTE 3, logo após:
+"Assim, tenho mais controle sobre o que está acontecendo."
+(antes de "E, dependendo da configuração do sistema...")
+
+------------------------------------------------------------------------
+E eu ainda tenho relatórios completos de acessos e de ligações, com filtros
+por período, local e usuário. Os documentos do condomínio e o livro de
+ocorrências também ficam sempre à mão, para eu acompanhar qualquer evento
+registrado.
+------------------------------------------------------------------------
+
+========================================================================
+OBSERVAÇÃO:
+- "relação com a unidade" entra na parte 2, na hora de cadastrar visitante
+  (passo 1 → relação → passo 2 → passo 3), sem precisar de frase nova.
+- "notificações de emergência" foi REMOVIDO (não usar).
+========================================================================

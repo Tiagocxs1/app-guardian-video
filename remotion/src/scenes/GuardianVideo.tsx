@@ -4,27 +4,95 @@ import {
   Series,
   Audio,
   staticFile,
+  useCurrentFrame,
+  useVideoConfig,
+  interpolate,
+  spring,
 } from 'remotion';
-import {PhoneScene} from './PhoneScene';
-import {SCENES, C_DARK} from './timeline';
+import {PhoneScreen} from './PhoneScene';
+import {SCENES, C_DARK, C_CYAN, C_WHITE, C_RED} from './timeline';
 
-// Narração completa já concatenada (308.7s) — um único áudio, sem sobreposição.
+// Mockup Moto G04s — dimensões
+const PHONE_W = 680;
+const PHONE_H = 1450;
+const SCREEN_INSET = 24;
+
 export const GuardianVideo: React.FC = () => {
-  return (
-    <AbsoluteFill style={{background: C_DARK}}>
-      <Series>
-        {SCENES.map((scene, i) => (
-          <Series.Sequence
-            key={scene.id}
-            durationInFrames={Math.round(scene.durationSec * 30)}
-          >
-            <PhoneScene scene={scene} continuing={i > 0 && SCENES[i - 1].screenshot === scene.screenshot} />
-          </Series.Sequence>
-        ))}
-      </Series>
+  const frame = useCurrentFrame();
+  const {fps, width, height} = useVideoConfig();
 
-      {/* Narração única (concatenada) — sem gaps, sem sobreposição */}
-      <Audio src={staticFile('narracao_full.mp3')} />
+  // Entrada única do mockup (slide-up + overshoot)
+  const entrance = spring({frame, fps, config: {damping: 14, mass: 1, stiffness: 90}});
+  const entryY = interpolate(entrance, [0, 1], [height * 0.5, 0]);
+
+  // Hover contínuo sutil
+  const hover = Math.sin(frame / 25) * 10;
+
+  return (
+    <AbsoluteFill style={{background: C_DARK, overflow: 'hidden'}}>
+      <MeshBackground frame={frame} />
+
+      {/* Barra superior accent */}
+      <div style={{position: 'absolute', top: 0, left: 0, right: 0, height: 10, background: C_CYAN, opacity: 0.9}} />
+
+      {/* Mockup Moto G04s (persistente) */}
+      <div
+        style={{
+          position: 'absolute',
+          left: '50%',
+          top: '45%',
+          width: PHONE_W,
+          height: PHONE_H,
+          transform: `translate(-50%, -50%) translateY(${entryY + hover}px)`,
+          filter: 'drop-shadow(0 45px 60px rgba(0,0,0,0.55))',
+        }}
+      >
+        {/* Corpo grafite */}
+        <div
+          style={{
+            position: 'absolute', inset: 0, borderRadius: 52,
+            background: 'linear-gradient(135deg, #2a323d 0%, #141920 100%)',
+            border: '3px solid #3f4b5c',
+          }}
+        />
+        {/* Notch câmera */}
+        <div
+          style={{
+            position: 'absolute', top: 20, left: '50%', width: 74, height: 7,
+            transform: 'translateX(-50%)', borderRadius: 4, background: '#444', zIndex: 5,
+          }}
+        />
+        {/* Tela (conteúdo troca por cena) */}
+        <div
+          style={{
+            position: 'absolute', inset: SCREEN_INSET, borderRadius: 34,
+            overflow: 'hidden', background: '#000', zIndex: 2,
+          }}
+        >
+          <Series>
+            {SCENES.map((scene) => (
+              <Series.Sequence key={scene.id} durationInFrames={Math.round(scene.durationSec * 30)}>
+                <PhoneScreen scene={scene} />
+              </Series.Sequence>
+            ))}
+          </Series>
+        </div>
+      </div>
+
+      {/* Narração única */}
+      <Audio src={staticFile('narracao_final.mp3')} />
+    </AbsoluteFill>
+  );
+};
+
+// Mesh gradient de fundo
+const MeshBackground: React.FC<{frame: number}> = ({frame}) => {
+  const drift = (frame / 200) * Math.PI * 2;
+  return (
+    <AbsoluteFill style={{overflow: 'hidden'}}>
+      <div style={{position:'absolute', width:'80%', height:'55%', left:`${20+Math.sin(drift)*8}%`, top:'8%', background:'radial-gradient(circle at center, rgba(203,48,51,0.5), transparent 68%)'}} />
+      <div style={{position:'absolute', width:'75%', height:'50%', right:`${8+Math.cos(drift)*10}%`, bottom:'4%', background:'radial-gradient(circle at center, rgba(0,255,255,0.28), transparent 68%)'}} />
+      <div style={{position:'absolute', width:'60%', height:'45%', left:'38%', top:'38%', background:'radial-gradient(circle at center, rgba(4,52,76,0.9), transparent 70%)'}} />
     </AbsoluteFill>
   );
 };
