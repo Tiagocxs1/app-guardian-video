@@ -133,25 +133,31 @@ export const PhoneScene: React.FC<{scene: SceneData}> = ({scene}) => {
         </div>
       </div>
 
-      {/* Kinetic Typography */}
+      {/* Kinetic Typography — com caixa escura para garantir contraste */}
       <div
         style={{
           position: 'absolute',
           left: '50%',
-          bottom: 130,
+          bottom: 120,
           transform: `translateX(-50%) translateY(${exitOut * 0.4}px)`,
           textAlign: 'center',
           zIndex: 10,
+          padding: '28px 48px',
+          borderRadius: 28,
+          background: 'rgba(4, 52, 76, 0.92)',
+          boxShadow: '0 8px 40px rgba(0,0,0,0.45)',
+          backdropFilter: 'blur(6px)',
         }}
       >
         <div
           style={{
-            fontSize: 88,
+            fontSize: 82,
             fontWeight: 800,
             color: C_WHITE,
             fontFamily: 'Inter, DejaVu Sans, sans-serif',
             letterSpacing: -2,
-            lineHeight: 1.02,
+            lineHeight: 1.05,
+            textShadow: '0 2px 16px rgba(0,0,0,0.5)',
             transform: `scale(${titleProgress})`,
             opacity: titleProgress,
           }}
@@ -160,13 +166,14 @@ export const PhoneScene: React.FC<{scene: SceneData}> = ({scene}) => {
         </div>
         <div
           style={{
-            marginTop: 24,
-            fontSize: 40,
-            fontWeight: 600,
+            marginTop: 18,
+            fontSize: 38,
+            fontWeight: 700,
             color: C_CYAN,
             fontFamily: 'Inter, DejaVu Sans, sans-serif',
             letterSpacing: 3,
             textTransform: 'uppercase',
+            textShadow: '0 1px 8px rgba(0,0,0,0.6)',
             opacity: subtitleProgress,
           }}
         >
@@ -233,6 +240,7 @@ const HotspotHighlight: React.FC<{
           height: 70,
           borderRadius: '50%',
           border: `3px solid ${color}`,
+          boxShadow: `0 0 0 3px rgba(0,0,0,0.55), 0 0 20px rgba(0,0,0,0.5)`,
           transform: `translate(-50%, -50%) scale(${rippleScale})`,
           opacity: rippleOpacity,
           pointerEvents: 'none',
@@ -249,8 +257,9 @@ const HotspotHighlight: React.FC<{
           height: ringRadius * 2,
           borderRadius: '50%',
           border: `3px dashed ${color}`,
+          boxShadow: '0 0 0 3px rgba(0,0,0,0.6), 0 0 18px rgba(0,0,0,0.5)',
           transform: `translate(-50%, -50%) rotate(${ringRotation}deg)`,
-          opacity: 0.9,
+          opacity: 0.95,
           pointerEvents: 'none',
         }}
       />
@@ -261,11 +270,11 @@ const HotspotHighlight: React.FC<{
           position: 'absolute',
           left: x + Math.cos((orbitAngle * Math.PI) / 180) * orbitRadius,
           top: y + Math.sin((orbitAngle * Math.PI) / 180) * orbitRadius,
-          width: 10,
-          height: 10,
+          width: 12,
+          height: 12,
           borderRadius: '50%',
           background: color,
-          boxShadow: `0 0 12px ${color}`,
+          boxShadow: `0 0 0 3px rgba(0,0,0,0.7), 0 0 14px ${color}`,
           transform: 'translate(-50%, -50%)',
           pointerEvents: 'none',
         }}
@@ -350,15 +359,16 @@ const LogoBar: React.FC<{opacity: number}> = ({opacity}) => (
   >
     <img
       src={staticFile('logo-guardian.png')}
-      style={{height: 40, objectFit: 'contain'}}
+      style={{height: 40, objectFit: 'contain', filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.7))'}}
     />
     <span
       style={{
         color: C_WHITE,
         fontSize: 24,
-        fontWeight: 600,
+        fontWeight: 700,
         letterSpacing: 2,
         fontFamily: 'Inter, DejaVu Sans, sans-serif',
+        textShadow: '0 2px 10px rgba(0,0,0,0.8)',
       }}
     >
       GUARDIAN
