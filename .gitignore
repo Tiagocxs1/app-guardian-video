@@ -1,0 +1,20 @@
+# Node / Remotion
+node_modules/
+remotion/node_modules/
+remotion/.cache/
+remotion/build/
+
+# Output
+assets/video/*.mp4
+out/
+
+# Estrutura de trabalho antiga (não versionar)
+assets/prints/
+video.csv
+remotion/ocr/
+
+# Sistema
+.DS_Store
+*.logassets/audio/
+assets/video/
+assets/brand/
