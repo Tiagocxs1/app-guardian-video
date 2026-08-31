@@ -16,27 +16,30 @@ const SCREEN_W = 600;
 const SCREEN_H = 1320;
 
 // Mockup Moto G04s com destaque de botão (hotspot) via OCR
-export const PhoneScene: React.FC<{scene: SceneData}> = ({scene}) => {
+export const PhoneScene: React.FC<{scene: SceneData; continuing?: boolean}> = ({
+  scene,
+  continuing = false,
+}) => {
   const frame = useCurrentFrame();
   const {fps, width, height, durationInFrames} = useVideoConfig();
 
   const durFrames = Math.round(scene.durationSec * fps);
 
-  // ----- Entrada: slide-up + overshoot -----
-  const entrance = spring({
-    frame,
-    fps,
-    config: {damping: 14, mass: 1, stiffness: 90},
-  });
-  const entryY = interpolate(entrance, [0, 1], [height * 0.5, 0]);
+  // Se o print é o mesmo da cena anterior, não anima entrada/saída (continua estático).
+  const entryY = continuing ? 0 : interpolate(
+    spring({frame, fps, config: {damping: 14, mass: 1, stiffness: 90}}),
+    [0, 1],
+    [height * 0.5, 0]
+  );
 
-  // ----- Saída: slide-down no fim da cena -----
-  const exitStart = durFrames - 18;
-  const exitOut = interpolate(frame, [durFrames - 18, durFrames], [0, height * 0.6], {
-    extrapolateLeft: 'clamp',
-    extrapolateRight: 'clamp',
-    easing: Easing.in(Easing.cubic),
-  });
+  // ----- Saída: slide-down no fim da cena (apenas se não continuar) -----
+  const exitOut = continuing
+    ? 0
+    : interpolate(frame, [durFrames - 18, durFrames], [0, height * 0.6], {
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+        easing: Easing.in(Easing.cubic),
+      });
 
   // ----- Hover Y contínuo -----
   const hover = Math.sin(frame / 22) * 12;
@@ -73,10 +76,12 @@ export const PhoneScene: React.FC<{scene: SceneData}> = ({scene}) => {
           height: PHONE_H,
           transform: `translate(-50%, -50%) translateY(${entryY + hover + exitOut}px)`,
           filter: `drop-shadow(0 ${40 + hover * 0.3}px 60px rgba(0,0,0,0.5))`,
-          opacity: interpolate(frame, [durFrames - 12, durFrames], [1, 0], {
-            extrapolateLeft: 'clamp',
-            extrapolateRight: 'clamp',
-          }),
+          opacity: continuing
+            ? 1
+            : interpolate(frame, [durFrames - 12, durFrames], [1, 0], {
+                extrapolateLeft: 'clamp',
+                extrapolateRight: 'clamp',
+              }),
           zIndex: 2,
         }}
       >
