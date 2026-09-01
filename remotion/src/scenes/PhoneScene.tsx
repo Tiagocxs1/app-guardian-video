@@ -23,6 +23,7 @@ export const ScreenContent: React.FC<{scene: SceneData}> = ({scene}) => {
       {scene.kind === 'video' && (
         <Video
           src={staticFile('videocameras.mp4')}
+          startFrom={Math.round((scene.videoStartSec ?? 0) * 30)}
           style={{width: '100%', height: '100%', objectFit: 'cover'}}
         />
       )}
@@ -102,31 +103,29 @@ export const Caption: React.FC<{scene: SceneData}> = ({scene}) => {
 };
 
 // Print com suporte a scroll vertical (para prints altos como o menu)
+// Usa objectPosition (nativo do cover) para NUNCA revelar fundo preto.
 const PrintContent: React.FC<{scene: SceneData}> = ({scene}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const durFrames = Math.round(scene.durationSec * fps);
 
-  let transform = 'none';
-  if (scene.scroll) {
-    const p = interpolate(frame, [0, durFrames], [0, 1], {
-      extrapolateLeft: 'clamp',
-      extrapolateRight: 'clamp',
-      easing: Easing.inOut(Easing.cubic),
-    });
-    transform = `translateY(${-p * 42}%)`;
-  }
+  const p = scene.scroll
+    ? interpolate(frame, [0, durFrames], [0, 1], {
+        extrapolateLeft: 'clamp',
+        extrapolateRight: 'clamp',
+        easing: Easing.inOut(Easing.cubic),
+      })
+    : 0;
 
   return (
-    <div style={{position: 'absolute', inset: 0, overflow: 'hidden'}}>
+    <div style={{position: 'absolute', inset: 0, overflow: 'hidden', background: '#000'}}>
       <Img
         src={staticFile(`prints_processados/${scene.rec}.png`)}
         style={{
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          objectPosition: 'top',
-          transform,
+          objectPosition: `50% ${p * 100}%`,
         }}
       />
     </div>
