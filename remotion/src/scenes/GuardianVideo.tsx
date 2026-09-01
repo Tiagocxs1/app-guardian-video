@@ -10,7 +10,7 @@ import {
   spring,
 } from 'remotion';
 import {ScreenContent, Caption} from './PhoneScene';
-import {SCENES, C_DARK, C_CYAN} from './timeline';
+import {SCENES, C_DARK} from './timeline';
 
 // Mockup Moto G04s — dimensões
 const PHONE_W = 680;
@@ -32,15 +32,12 @@ export const GuardianVideo: React.FC = () => {
     <AbsoluteFill style={{background: C_DARK, overflow: 'hidden'}}>
       <MeshBackground frame={frame} />
 
-      {/* Barra superior accent */}
-      <div style={{position: 'absolute', top: 0, left: 0, right: 0, height: 10, background: C_CYAN, opacity: 0.9}} />
-
-      {/* Mockup Moto G04s (persistente) — posicionado mais acima para não sobrepor a legenda */}
+      {/* Mockup Moto G04s (persistente) — posicionado mais baixo, mais perto da legenda */}
       <div
         style={{
           position: 'absolute',
           left: '50%',
-          top: '39%',
+          top: '44%',
           width: PHONE_W,
           height: PHONE_H,
           transform: `translate(-50%, -50%) translateY(${entryY + hover}px)`,
