@@ -11,25 +11,47 @@ import {
 } from 'remotion';
 import {C_CYAN, C_WHITE, type SceneData} from './timeline';
 
+// Faixa de blur no topo (esconde nome/email/foto do header do app).
+// Aplicada sempre dentro do app, EXCETO no menu.
+const TopBlur: React.FC<{heightPct?: number}> = ({heightPct = 22}) => {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: `${heightPct}%`,
+        zIndex: 5,
+        backdropFilter: 'blur(22px)',
+        WebkitBackdropFilter: 'blur(22px)',
+        // gradiente suave na borda inferior para não criar um corte seco
+        background:
+          'linear-gradient(to bottom, rgba(0,0,0,0.42) 0%, rgba(0,0,0,0.28) 60%, rgba(0,0,0,0) 100%)',
+      }}
+    />
+  );
+};
+
 // ----- Conteúdo interno da TELA do mockup (print/vídeo/logo/hotspot) -----
 export const ScreenContent: React.FC<{scene: SceneData}> = ({scene}) => {
-  const frame = useCurrentFrame();
-  const {fps} = useVideoConfig();
-  const durFrames = Math.round(scene.durationSec * fps);
-
   return (
     <AbsoluteFill style={{overflow: 'hidden', background: '#000'}}>
       {scene.kind === 'print' && <PrintContent scene={scene} />}
       {scene.kind === 'video' && (
         <Video
-          src={staticFile('videocameras.mp4')}
+          src={staticFile(scene.src ?? 'videocameras.mp4')}
           startFrom={Math.round((scene.videoStartSec ?? 0) * 30)}
           style={{width: '100%', height: '100%', objectFit: 'cover'}}
         />
       )}
       {scene.kind === 'logo' && <LogoContent />}
 
-      </AbsoluteFill>
+      {/* Blur no topo: videos sempre; prints exceto menu */}
+      {(scene.kind === 'video' || (scene.kind === 'print' && scene.rec !== 'menu')) && (
+        <TopBlur />
+      )}
+    </AbsoluteFill>
   );
 };
 
@@ -59,7 +81,7 @@ export const Caption: React.FC<{scene: SceneData}> = ({scene}) => {
       style={{
         position: 'absolute',
         left: '50%',
-        bottom: 70,
+        bottom: 90,
         transform: 'translateX(-50%)',
         opacity: fadeOut,
         textAlign: 'center',
@@ -158,4 +180,3 @@ const LogoContent: React.FC = () => {
     </AbsoluteFill>
   );
 };
-
