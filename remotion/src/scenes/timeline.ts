@@ -36,7 +36,7 @@ export const SCENES: SceneData[] = [
   { id: 24, kind: 'print', rec: 'menu', phrase: 'Além do acesso', subtitle: 'Menu gestor', durationSec: 5.0, scroll: true },
   { id: 25, kind: 'print', rec: 'meus_dados___dados_basicos', phrase: 'Meus dados', subtitle: 'Edite suas informações', durationSec: 6.0, scroll: false },
   { id: 26, kind: 'print', rec: 'cadastro_de_chaveiros', phrase: 'Chaveiros e controles', subtitle: 'Aproximação', durationSec: 5.0, scroll: false },
-  { id: 27, kind: 'print', rec: 'meus_veiculos', phrase: 'Veículos', subtitle: 'Da sua família', durationSec: 3.0, scroll: false },
+  { id: 27, kind: 'print', rec: 'meus_veiculos', phrase: 'Veículos', subtitle: 'da sua família', durationSec: 3.0, scroll: false },
   { id: 28, kind: 'print', rec: 'senhas_de_acesso_cadastradas', phrase: 'Senhas de acesso', subtitle: 'Altere quando quiser', durationSec: 5.0, scroll: false },
   { id: 29, kind: 'print', rec: 'gestor_de_visitantes', phrase: 'Gerenciar informações', subtitle: 'Visitantes', durationSec: 8.0, scroll: false },
   { id: 30, kind: 'print', rec: 'usuarios', phrase: 'Adicionar morador', subtitle: 'Novo usuário', durationSec: 6.0, scroll: false },
