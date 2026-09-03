@@ -12,8 +12,8 @@ import {
 import {C_CYAN, C_WHITE, type SceneData} from './timeline';
 
 // Faixa de blur no topo (esconde nome/email/foto do header do app).
-// Aplicada sempre dentro do app, EXCETO no menu.
-const TopBlur: React.FC<{heightPct?: number}> = ({heightPct = 22}) => {
+// Aplicada dentro do app, EXCETO no menu e em telas sem dados sensíveis (noBlur).
+const TopBlur: React.FC<{heightPct?: number}> = ({heightPct = 18}) => {
   return (
     <div
       style={{
@@ -47,10 +47,8 @@ export const ScreenContent: React.FC<{scene: SceneData}> = ({scene}) => {
       )}
       {scene.kind === 'logo' && <LogoContent />}
 
-      {/* Blur no topo: videos sempre; prints exceto menu */}
-      {(scene.kind === 'video' || (scene.kind === 'print' && scene.rec !== 'menu')) && (
-        <TopBlur />
-      )}
+      {/* Blur no topo APENAS em vídeos (prints PNG já trazem o blur embutido) */}
+      {scene.kind === 'video' && <TopBlur />}
     </AbsoluteFill>
   );
 };
